@@ -1,0 +1,6 @@
+version: 2.0
+shards:
+  sdl-crystal-bindings:
+    git: https://github.com/hadeweka/sdl-crystal-bindings.git
+    version: 0.1.0+git.commit.a6bac8a420248950a5bc536332f0343e7947e2e1
+

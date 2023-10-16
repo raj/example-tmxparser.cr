@@ -1,0 +1,19 @@
+name: example-tmxparser
+version: 0.1.0
+
+authors:
+  - raj deenoo <raj.deenoo@gmail.com>
+
+targets:
+  example-tmxparser:
+    main: src/example-tmxparser.cr
+
+crystal: 1.9.2
+
+license: MIT
+
+dependencies:
+  sdl-crystal-bindings:
+    github: Hadeweka/SDL-Crystal-Bindings
+    branch: main
+

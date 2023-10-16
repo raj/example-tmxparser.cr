@@ -29,7 +29,7 @@ if (LibSDL.img_init(img_flags) | img_flags.to_i) == 0
   raise "SDL_image could not initialize! SDL_image Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
 
-loaded_surface = LibSDL.img_load("assets/texture.png")
+loaded_surface = LibSDL.img_load("assets/tmw_desert_spacing.png")
 raise "Unable to load image texture.png! SDL_image Error: #{String.new(LibSDL.get_error)}" unless loaded_surface
 
 g_texture = LibSDL.create_texture_from_surface(g_renderer, loaded_surface)
@@ -46,9 +46,18 @@ while (!quit)
     end
   end
 
+  tile_width = 32
+  tile_height = 32
+  source_rect = LibSDL::Rect.new(x: tile_width * 3, y: tile_height * 5, w: tile_width, h: tile_height)
+  destination_rect = LibSDL::Rect.new(x: 0, y: 0, w: tile_width, h: tile_height)
+  # LibSDL.set_render_draw_color(g_renderer, 0x00, 0xFF, 0x00, 0xFF)
+  # LibSDL.render_draw_rect(g_renderer, pointerof(outline_rect))
   LibSDL.render_clear(g_renderer)
-  LibSDL.render_copy(g_renderer, g_texture, nil, nil)
+  LibSDL.render_copy(g_renderer, g_texture, pointerof(source_rect), pointerof(destination_rect))
+
   LibSDL.render_present(g_renderer)
+
+
 end
 
 LibSDL.destroy_texture(g_texture)

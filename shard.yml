@@ -16,4 +16,5 @@ dependencies:
   sdl-crystal-bindings:
     github: Hadeweka/SDL-Crystal-Bindings
     branch: main
-
+  tmxparser:
+    path: ../tmxparser

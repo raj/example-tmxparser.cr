@@ -8,13 +8,15 @@ module Example::Tmxparser
 
   SCREEN_WIDTH  = 640
   SCREEN_HEIGHT = 480
-  ZOOM_FACTOR = 10
+  ZOOM_FACTOR = 2
 
   g_window = create_window
   g_renderer = create_renderer(g_window)
   init_sdl_image
   # tilemap = ::Tmxparser.load_xml("assets/sample-map.tmx")
-  tilemap = ::Tmxparser.load_xml("assets/simple_test.tmx")
+  tilemap = ::Tmxparser.load_xml("assets/sample-map.tmx")
+  # tilemap = ::Tmxparser.load_xml("assets/example.tmx") # data is only 0
+
 
   sdl_tilemap = SdlTilemap.new(g_renderer, tilemap, "assets")
   sdl_tilemap.load_textures

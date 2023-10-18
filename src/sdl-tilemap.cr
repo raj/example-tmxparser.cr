@@ -49,7 +49,7 @@ module Example::Tmxparser
 
       all_data = layer_data.data.split(",").map { |x| x.to_i }
       all_texture_source = layer_data.data.split(",").map { |x| source_rect_from_tilenumber(x.to_i) }
-
+      # puts "all_data: #{all_texture_source.inspect}"
       zoom = camera.value.zoom
       source_tw = (tileset.tilewidth || 1)
       source_th = (tileset.tileheight || 1)
@@ -65,9 +65,9 @@ module Example::Tmxparser
     end
 
     def source_rect_from_tilenumber(tile_number : Int32) : Array(Int32) # [Int32, Int32]
-      columns = (image.width / (tileset.tilewidth || 1)).to_i
+      columns = ((image.width + (tileset.spacing || 0) ) / ((tileset.tilewidth || 1) + (tileset.spacing || 0))).to_i
       position_x = tile_number % columns == 0 ? columns : tile_number % columns
-      position_x = tile_number <= columns ? tile_number : position_x 
+      position_x = tile_number <= columns ? tile_number : position_x
       position_y = tile_number % columns == 0 ? (tile_number / columns).to_i : (tile_number / columns).to_i + 1
       position_y = tile_number <= columns ? 1 : position_y
       [
@@ -80,6 +80,7 @@ module Example::Tmxparser
       # puts "render_map"
       # puts "camera: #{camera.value.width}"
       @tilemap.layers.each do |layer|
+        # return unless layer.name == "Terrain"
         # puts "layer: #{layer.inspect}"
         render_layer(layer, camera)
       end

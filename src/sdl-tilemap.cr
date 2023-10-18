@@ -46,16 +46,18 @@ module Example::Tmxparser
         puts "layer_data is nil"
         return
       end
-
-      all_data = layer_data.data.split(",").map { |x| x.to_i }
-      all_texture_source = layer_data.data.split(",").map { |x| source_rect_from_tilenumber(x.to_i) }
-      # puts "all_data: #{all_texture_source.inspect}"
+      # puts "layer_data: #{layer_data.inspect}"
+      all_data = layer_data.data.split(",").map { |x| begin x.to_i rescue 0 end }
+      # puts "all_data 1: #{all_data.inspect}" if layer.name == "Objects"
+      all_texture_source = all_data.map { |x| source_rect_from_tilenumber(x) }
+      # puts "all_data: #{all_texture_source.inspect}" if layer.name == "Objects"
       zoom = camera.value.zoom
       source_tw = (tileset.tilewidth || 1)
       source_th = (tileset.tileheight || 1)
       all_texture_source.each_slice(layer.width).each_with_index do |row_textures, index_row|
         dest_y = index_row * source_th * zoom
         row_textures.each_with_index do |texture_source, index_col|
+          next if texture_source[0] == -1
           source_rect = LibSDL::Rect.new(x: texture_source[0], y: texture_source[1], w: source_tw, h: source_th)
           dest_x = index_col * source_tw * zoom
           destination_rect = LibSDL::Rect.new(x: dest_x, y: dest_y, w: source_tw * zoom, h: source_th * zoom)
@@ -65,6 +67,9 @@ module Example::Tmxparser
     end
 
     def source_rect_from_tilenumber(tile_number : Int32) : Array(Int32) # [Int32, Int32]
+      if (tile_number == 0)
+        return [-1, -1]
+      end
       columns = ((image.width + (tileset.spacing || 0) ) / ((tileset.tilewidth || 1) + (tileset.spacing || 0))).to_i
       position_x = tile_number % columns == 0 ? columns : tile_number % columns
       position_x = tile_number <= columns ? tile_number : position_x
@@ -79,9 +84,11 @@ module Example::Tmxparser
     def render_map(camera : Pointer(Camera))
       # puts "render_map"
       # puts "camera: #{camera.value.width}"
+      # puts @tilemap.layers.last.inspect
       @tilemap.layers.each do |layer|
-        # return unless layer.name == "Terrain"
-        # puts "layer: #{layer.inspect}"
+        # return unless layer.name == "Objects"
+        # puts "layer: #{layer.name}"
+        # puts "layer data : #{layer.layer_data.inspect}"
         render_layer(layer, camera)
       end
 

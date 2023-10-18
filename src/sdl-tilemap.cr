@@ -11,12 +11,12 @@ module Example::Tmxparser
       @tilemap = tilemap
       @assets_path = assets_path
       @textures = {} of String => Pointer(LibSDL::Texture)
-      puts "renderer: #{@renderer.inspect}"
-      puts "tilemap: #{@tilemap.inspect}"
-      puts "-----------------------------------------------"
+      # puts "renderer: #{@renderer.inspect}"
+      # puts "tilemap: #{@tilemap.inspect}"
+      # puts "-----------------------------------------------"
       puts "tilemap: #{@tilemap.tilesets.inspect}"
 
-      # @tileset = SDL::Image::load_texture(@renderer, @tilemap.tileset.image.source)
+      # # @tileset = SDL::Image::load_texture(@renderer, @tilemap.tileset.image.source)
     end
 
     def load_textures
@@ -28,25 +28,52 @@ module Example::Tmxparser
     end
 
     # TODO : for now only one tileset is supported
+    def tileset
+      @tilemap.tilesets.first
+    end
+
+    def image
+      tileset.images.first
+    end
+
     def texture
-      @textures[@tilemap.tilesets.first.images.first.source]
+      @textures[image.source]
     end
 
     def render_layer(layer : ::Tmxparser::Layer, camera : Pointer(Camera) )
-      # puts "render_layer #{layer.name} with texture #{texture.inspect}"
       layer_data = layer.layer_data
       if layer_data.nil?
         puts "layer_data is nil"
         return
       end
-      puts "data: #{layer.inspect}"
+
       all_data = layer_data.data.split(",").map { |x| x.to_i }
-      puts "all_data: #{all_data.size}"
+      all_texture_source = layer_data.data.split(",").map { |x| source_rect_from_tilenumber(x.to_i) }
 
       zoom = camera.value.zoom
-      source_rect = LibSDL::Rect.new(x:87, y: 87, w: 8, h: 8)
-      destination_rect = LibSDL::Rect.new(x: 0, y: 0, w: 8 * zoom, h: 8 * zoom)
-      LibSDL.render_copy(@renderer, texture, pointerof(source_rect), pointerof(destination_rect))
+      source_tw = (tileset.tilewidth || 1)
+      source_th = (tileset.tileheight || 1)
+      all_texture_source.each_slice(layer.width).each_with_index do |row_textures, index_row|
+        dest_y = index_row * source_th * zoom
+        row_textures.each_with_index do |texture_source, index_col|
+          source_rect = LibSDL::Rect.new(x: texture_source[0], y: texture_source[1], w: source_tw, h: source_th)
+          dest_x = index_col * source_tw * zoom
+          destination_rect = LibSDL::Rect.new(x: dest_x, y: dest_y, w: source_tw * zoom, h: source_th * zoom)
+          LibSDL.render_copy(@renderer, texture, pointerof(source_rect), pointerof(destination_rect))
+        end
+      end
+    end
+
+    def source_rect_from_tilenumber(tile_number : Int32) : Array(Int32) # [Int32, Int32]
+      columns = (image.width / (tileset.tilewidth || 1)).to_i
+      position_x = tile_number % columns == 0 ? columns : tile_number % columns
+      position_x = tile_number <= columns ? tile_number : position_x 
+      position_y = tile_number % columns == 0 ? (tile_number / columns).to_i : (tile_number / columns).to_i + 1
+      position_y = tile_number <= columns ? 1 : position_y
+      [
+        (position_x - 1) * (tileset.tilewidth || 1) + (position_x - 1) * (tileset.spacing || 0),
+        (position_y - 1) * (tileset.tileheight || 1) + (position_y - 1) * (tileset.spacing || 0),
+      ]
     end
 
     def render_map(camera : Pointer(Camera))

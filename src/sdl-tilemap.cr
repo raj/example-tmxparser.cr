@@ -55,7 +55,12 @@ module Example::Tmxparser
         dest_y = index_row * source_th * zoom
         row_textures.each_with_index do |texture_source, index_col|
           next if texture_source[0] == -1
-          source_rect = LibSDL::Rect.new(x: texture_source[0], y: texture_source[1], w: source_tw, h: source_th)
+          source_rect = LibSDL::Rect.new(
+            x: texture_source[0],
+            y: texture_source[1],
+            w: source_tw,
+            h: source_th
+          )
           dest_x = index_col * source_tw * zoom
           destination_rect = LibSDL::Rect.new(
             x: dest_x - camera.value.x,

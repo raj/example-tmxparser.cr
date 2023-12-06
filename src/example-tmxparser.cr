@@ -32,6 +32,14 @@ module Example::Tmxparser
       if e.type == LibSDL::EventType::QUIT.to_i
         quit = true
       end
+      if e.type == LibSDL::EventType::MOUSEWHEEL.to_i
+        printf("wheel: %d\n", e.wheel.y)
+        if (e.wheel.y > 0)
+          camera.zoom_in
+        else
+          camera.zoom_out
+        end
+      end
     end
     current_key_states = LibSDL.get_keyboard_state(nil)
     if current_key_states[LibSDL::Scancode::SCANCODE_ESCAPE.to_i] == 1

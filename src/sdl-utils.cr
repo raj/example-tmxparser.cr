@@ -15,7 +15,9 @@ module Example::Tmxparser
   def self.create_window : Pointer(LibSDL::Window)
     g_window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED, LibSDL::WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, LibSDL::WindowFlags::WINDOW_SHOWN)
     raise "Window could not be created! SDL Error: #{String.new(LibSDL.get_error)}" unless g_window
-    
+    displays = LibSDL.get_num_video_displays
+    puts "Number of displays: #{displays}"
+
     g_window
   end
 

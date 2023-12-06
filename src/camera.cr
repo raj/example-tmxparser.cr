@@ -18,5 +18,13 @@ module Example::Tmxparser
       @x += x
       @y += y
     end
+
+    def zoom_in
+      @zoom += 1
+    end
+
+    def zoom_out
+      @zoom -= 1
+    end
   end
 end

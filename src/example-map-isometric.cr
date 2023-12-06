@@ -18,7 +18,7 @@ module Example::Tmxparser
 
   sdl_tilemap = SdlTilemap.new(g_renderer, tilemap, "assets")
   sdl_tilemap.load_textures
-  camera = Camera.new(-50, -50, SCREEN_WIDTH, SCREEN_HEIGHT, ZOOM_FACTOR)
+  camera = Camera.new(-600, -50, SCREEN_WIDTH, SCREEN_HEIGHT, ZOOM_FACTOR)
 
   quit = false
 

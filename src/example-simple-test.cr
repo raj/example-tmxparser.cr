@@ -14,14 +14,12 @@ module Example::Tmxparser
   g_window = create_window
   g_renderer = create_renderer(g_window)
   init_sdl_image
-  # tilemap = ::Tmxparser.load_xml("assets/sample-map.tmx")
-  tilemap = ::Tmxparser.load_xml("assets/sample-map.tmx")
-  # tilemap = ::Tmxparser.load_xml("assets/example.tmx") # data is only 0
+  tilemap = ::Tmxparser.load_xml("assets/simple-test.tmx")
 
 
   sdl_tilemap = SdlTilemap.new(g_renderer, tilemap, "assets")
   sdl_tilemap.load_textures
-  camera = Camera.new(10, 50, SCREEN_WIDTH, SCREEN_HEIGHT, ZOOM_FACTOR)
+  camera = Camera.new(-400, -200, SCREEN_WIDTH, SCREEN_HEIGHT, ZOOM_FACTOR)
 
   quit = false
 

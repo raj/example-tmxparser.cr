@@ -48,7 +48,7 @@ module Example::Tmxparser
       end
 
       # VERSION 2 : still othorgraphic
-      source_dests = layer.source_destination_indexes(tileset, camera.value.x, camera.value.y, camera.value.width, camera.value.height, camera.value.zoom)
+      source_dests = layer.source_destination_indexes(tileset)
       source_dests.each do |source_dest|
         source_rect = LibSDL::Rect.new(
           x: source_dest.source.x,
@@ -57,10 +57,10 @@ module Example::Tmxparser
           h: source_dest.source.h
         )
         dest_rect = LibSDL::Rect.new(
-          x: source_dest.destination.x,
-          y: source_dest.destination.y,
-          w: source_dest.destination.w,
-          h: source_dest.destination.h
+          x: (source_dest.destination.x * camera.value.zoom) - camera.value.x,
+          y: (source_dest.destination.y * camera.value.zoom) - camera.value.y,
+          w: source_dest.destination.w * camera.value.zoom,
+          h: source_dest.destination.h * camera.value.zoom
         )
         LibSDL.render_copy(@renderer, texture, pointerof(source_rect), pointerof(dest_rect))
       end

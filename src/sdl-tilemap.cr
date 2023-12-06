@@ -48,7 +48,7 @@ module Example::Tmxparser
       end
 
       # VERSION 2 : still othorgraphic
-      source_dests = layer.source_destination_indexes(tileset)
+      source_dests = layer.source_destination_indexes(tileset, @tilemap.orientation)
       source_dests.each do |source_dest|
         source_rect = LibSDL::Rect.new(
           x: source_dest.source.x,

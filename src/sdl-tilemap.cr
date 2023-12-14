@@ -40,6 +40,13 @@ module Example::Tmxparser
       @textures[image.source]
     end
 
+    def render_tileset(tileset : ::Tmxparser::Tileset, camera : Pointer(Camera))
+      tileset.tiles.each do |tile|
+        puts "tile: #{tile.inspect}"
+      end
+    end
+
+
     def render_layer(layer : ::Tmxparser::Layer, camera : Pointer(Camera))
       layer_data = layer.layer_data
       if layer_data.nil?
@@ -47,7 +54,6 @@ module Example::Tmxparser
         return
       end
 
-      # VERSION 2 : still othorgraphic
       source_dests = layer.source_destination_indexes(tileset, @tilemap.orientation)
       source_dests.each do |source_dest|
         source_rect = LibSDL::Rect.new(
@@ -64,61 +70,14 @@ module Example::Tmxparser
         )
         LibSDL.render_copy(@renderer, texture, pointerof(source_rect), pointerof(dest_rect))
       end
-
-      # print "source_dest: #{source_dest.inspect}\n"
-
-
-      # VERSION 1 OK
-      # all_data = layer_data.data.split(",").map { |x| begin x.to_i rescue 0 end }
-      # zoom = camera.value.zoom
-      # source_tw = (tileset.tilewidth || 1)
-      # source_th = (tileset.tileheight || 1)
-      # all_data
-      #   .map { |x| source_rect_from_tilenumber(x) }
-      #   .each_slice(layer.width).each_with_index do |row_textures, index_row|
-      #   row_textures.each_with_index do |texture_source, index_col|
-      #     next if texture_source[0] == -1
-      #     source_rect = LibSDL::Rect.new(
-      #       x: texture_source[0],
-      #       y: texture_source[1],
-      #       w: source_tw,
-      #       h: source_th
-      #     )
-      #     # source_rect = layer.layer_tile_source_rect(pointerof(tileset), texture_source[1])
-
-      #     dest_x = index_col * source_tw * zoom
-      #     dest_y = index_row * source_th * zoom
-      #     destination_rect = LibSDL::Rect.new(
-      #       x: dest_x - camera.value.x,
-      #       y: dest_y - camera.value.y,
-      #       w: source_tw * zoom,
-      #       h: source_th * zoom
-      #     )
-      #     LibSDL.render_copy(@renderer, texture, pointerof(source_rect), pointerof(destination_rect))
-      #   end
-      # end
-
-
-    end
-
-    def source_rect_from_tilenumber(tile_number : Int32) : Array(Int32) # [Int32, Int32]
-      if (tile_number == 0)
-        return [-1, -1]
-      end
-      columns = ((image.width + (tileset.spacing || 0)) / ((tileset.tilewidth || 1) + (tileset.spacing || 0))).to_i
-      position_x = tile_number % columns == 0 ? columns : tile_number % columns
-      position_x = tile_number <= columns ? tile_number : position_x
-      position_y = tile_number % columns == 0 ? (tile_number / columns).to_i : (tile_number / columns).to_i + 1
-      position_y = tile_number <= columns ? 1 : position_y
-      [
-        (position_x - 1) * (tileset.tilewidth || 1) + (position_x - 1) * (tileset.spacing || 0),
-        (position_y - 1) * (tileset.tileheight || 1) + (position_y - 1) * (tileset.spacing || 0),
-      ]
     end
 
     def render_map(camera : Pointer(Camera))
       @tilemap.layers.each do |layer|
         render_layer(layer, camera)
+      end
+      @tilemap.tilesets.each do |tileset|
+        render_tileset(tileset, camera)
       end
     end
 

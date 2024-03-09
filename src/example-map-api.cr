@@ -35,6 +35,8 @@ module Example::Tmxparser
         end
       end
     end
+    # puts LibSDL.get_performance_counter()
+
     current_key_states = LibSDL.get_keyboard_state(nil)
     if current_key_states[LibSDL::Scancode::SCANCODE_ESCAPE.to_i] == 1
       quit = true
@@ -54,7 +56,7 @@ module Example::Tmxparser
     end
 
     LibSDL.render_clear(g_renderer)
-    sdl_tilemap.render_map(pointerof(camera))
+    sdl_tilemap.render_map(pointerof(camera), LibSDL.get_ticks64)
     LibSDL.render_present(g_renderer)
   end
 

@@ -1,6 +1,6 @@
 # example-tmxparser
 
-TODO: Write a description here
+example of tmxparser.cr library
 
 ## Installation
 
@@ -8,7 +8,6 @@ TODO: Write installation instructions here
 
 ## Usage
 
-TODO: Write usage instructions here
 
 ## Development
 
@@ -24,4 +23,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [raj deenoo](https://github.com/your-github-user) - creator and maintainer
+- [raj deenoo](https://github.com/raj) - creator and maintainer

@@ -37,12 +37,12 @@ module Example::Tmxparser
       tileset = @tilemap.tilesets.find { |tileset| tileset.firstgid == max_gid }
       return if tileset.nil?
 
-
       source_dests = layer.source_destination_indexes(tileset, @tilemap.orientation, tick)
+      spacing = tileset.spacing || 0
       source_dests.each do |source_dest|
         source_rect = LibSDL::Rect.new(
-          x: source_dest.source.x,
-          y: source_dest.source.y,
+          x: source_dest.source.x + spacing,
+          y: source_dest.source.y + spacing,
           w: source_dest.source.w,
           h: source_dest.source.h
         )

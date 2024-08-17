@@ -54,7 +54,7 @@ module Example::Tmxparser
     end
 
     LibSDL.render_clear(g_renderer)
-    sdl_tilemap.render_map(pointerof(camera))
+    sdl_tilemap.render_map(pointerof(camera), LibSDL.get_ticks64)
     LibSDL.render_present(g_renderer)
   end
 

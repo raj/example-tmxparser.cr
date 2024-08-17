@@ -9,7 +9,7 @@ module Example::Tmxparser
   SCREEN_WIDTH  = 1280
   SCREEN_HEIGHT = 720
 
-  ZOOM_FACTOR = 1
+  ZOOM_FACTOR = 5
 
   g_window = create_window
   g_renderer = create_renderer(g_window)
@@ -18,7 +18,7 @@ module Example::Tmxparser
 
   sdl_tilemap = SdlTilemap.new(g_renderer, tilemap, "assets")
   sdl_tilemap.load_textures
-  camera = Camera.new(-600, -50, SCREEN_WIDTH, SCREEN_HEIGHT, ZOOM_FACTOR)
+  camera = Camera.new(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, ZOOM_FACTOR)
 
   quit = false
 

@@ -17,4 +17,5 @@ dependencies:
     github: raj/SDL-Crystal-Bindings
     branch: performance-methods
   tmxparser:
-    path: ../tmxparser
+    github: raj/tmxparser.cr
+    branch: main

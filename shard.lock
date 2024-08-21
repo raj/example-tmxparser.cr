@@ -5,6 +5,6 @@ shards:
     version: 0.2.0+git.commit.9540bf0c027101ee1dc5b67d8ec051d679474021
 
   tmxparser:
-    path: ../tmxparser
-    version: 0.1.0
+    git: https://github.com/raj/tmxparser.cr.git
+    version: 0.1.0+git.commit.a19ead27335f0c5e0093af416f3f9697baa6b77f
 

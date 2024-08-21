@@ -1,8 +1,8 @@
 version: 2.0
 shards:
   sdl-crystal-bindings:
-    path: ../SDL-Crystal-Bindings
-    version: 0.1.0
+    git: https://github.com/raj/sdl-crystal-bindings.git
+    version: 0.2.0+git.commit.9540bf0c027101ee1dc5b67d8ec051d679474021
 
   tmxparser:
     path: ../tmxparser

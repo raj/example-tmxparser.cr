@@ -14,8 +14,7 @@ license: MIT
 
 dependencies:
   sdl-crystal-bindings:
-    path: ../SDL-Crystal-Bindings
-    # github: Hadeweka/SDL-Crystal-Bindings
-    # branch: main
+    github: raj/SDL-Crystal-Bindings
+    branch: performance-methods
   tmxparser:
     path: ../tmxparser

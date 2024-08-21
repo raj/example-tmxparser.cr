@@ -40,11 +40,12 @@ module Example::Tmxparser
       source_dests = layer.source_destination_indexes(tileset, @tilemap.orientation, tick)
       spacing = tileset.spacing || 0
       spacing = 0 if @tilemap.orientation == ::Tmxparser::Orientation::Orthogonal
+      margin = tileset.margin || 0
 
       source_dests.each do |source_dest|
         source_rect = LibSDL::Rect.new(
-          x: source_dest.source.x + spacing,
-          y: source_dest.source.y + spacing,
+          x: source_dest.source.x + spacing + margin,
+          y: source_dest.source.y + spacing + margin,
           w: source_dest.source.w,
           h: source_dest.source.h
         )

@@ -9,7 +9,7 @@ module Example::Tmxparser
   SCREEN_WIDTH  = 1280
   SCREEN_HEIGHT = 720
 
-  ZOOM_FACTOR = 5
+  ZOOM_FACTOR = 3
 
   g_window = create_window
   g_renderer = create_renderer(g_window)
